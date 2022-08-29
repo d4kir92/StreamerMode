@@ -1,0 +1,18 @@
+## Interface: 90207
+## Version: 2022.08.17-07:40 Release
+## Title: D4KiR |cffffffff• |cff9966ffS|cfffffffftreamer |cff9966ffM|cffffffffode
+## Notes: Streamer Mode
+## Author: D4KiR
+## DefaultState: enabled
+## SavedVariables: STMOTAB
+## SavedVariablesPerCharacter: STMOTABPC
+## X-Curse-Project-ID: 573691
+## X-Wago-ID: baND79Go
+
+libs/LIB_extendedvariables.lua
+core.lua
+sm_chat.lua
+sm_tooltips.lua
+sm_guild.lua
+sm_nameplates.lua
+sm_scoreboards.lua
