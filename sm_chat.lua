@@ -10,7 +10,7 @@ ChatFrame1HideChat:SetPoint( "TOPRIGHT", ChatFrame1, "BOTTOMLEFT", -10, -10 )
 ChatFrame1HideChat:HookScript( "OnUpdate", function( self )
 	self:SetScale( UIParent:GetScale() )
 end )
-ChatFrame1HideChat:SetNormalTexture( "Interface\\AddOns\\D4KiR StreamerMode\\media\\visibility" )
+ChatFrame1HideChat:SetNormalTexture( "Interface\\AddOns\\StreamerMode\\media\\visibility" )
 local br = 0.0
 ChatFrame1HideChat:GetNormalTexture():SetTexCoord( -br, 1 + br, -br, 1 + br )
 
@@ -56,7 +56,7 @@ ChatFrame1HideChat:SetScript( "OnClick", function( self, state )
 		SMUpdateActiveChatWindows()
 		ChatFrame1:Show()
 		--ChatFrame1EditBox:Show()
-		ChatFrame1HideChat:SetNormalTexture( "Interface\\AddOns\\D4KiR StreamerMode\\media\\visibility" )
+		ChatFrame1HideChat:SetNormalTexture( "Interface\\AddOns\\StreamerMode\\media\\visibility" )
 	else
 		sm_chat_visible = false
 		for i = 1, 10 do
@@ -67,7 +67,7 @@ ChatFrame1HideChat:SetScript( "OnClick", function( self, state )
 		end
 		ChatFrame1:Hide()
 		--ChatFrame1EditBox:Hide()
-		ChatFrame1HideChat:SetNormalTexture( "Interface\\AddOns\\D4KiR StreamerMode\\media\\visibility_off" )
+		ChatFrame1HideChat:SetNormalTexture( "Interface\\AddOns\\StreamerMode\\media\\visibility_off" )
 	end
 end )
 
