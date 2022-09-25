@@ -158,3 +158,26 @@ end
 f:SetScript( "OnEvent", function(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
 	SetCVar( "chatBubbles", 0 )
 end )
+
+
+
+-- QUESTS
+if QuestInfoObjectivesText then
+	hooksecurefunc( QuestInfoObjectivesText, "SetText", function( self, text )
+		if self.smsettext then return end
+		self.smsettext = true
+		local pn = UnitName( "player" )
+		self:SetText( SMReplaceCharname( pn, text, SM_CHARNAME ) )
+		self.smsettext = false
+	end )
+end
+
+if QuestInfoDescriptionText then
+	hooksecurefunc( QuestInfoDescriptionText, "SetText", function( self, text )
+		if self.smsettext then return end
+		self.smsettext = true
+		local pn = UnitName( "player" )
+		self:SetText( SMReplaceCharname( pn, text, SM_CHARNAME ) )
+		self.smsettext = false
+	end )
+end
