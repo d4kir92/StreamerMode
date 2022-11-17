@@ -1,5 +1,5 @@
 ## Interface: 11403
-## Version: 1.0.8
+## Version: 1.0.9
 ## Title: StreamerMode |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
 ## Author: D4KiR
@@ -9,7 +9,6 @@
 ## X-Curse-Project-ID: 573691
 ## X-Wago-ID: baND79Go
 
-libs/LIB_extendedvariables.lua
 core.lua
 sm_chat.lua
 sm_tooltips.lua
