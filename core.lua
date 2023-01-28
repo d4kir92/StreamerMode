@@ -15,7 +15,9 @@ local tab_text = {
 	"TargetFrameToTTextureFrameName",
 	"FocusFrameToTTextureFrameName",
 	"CharacterFrameTitleText",
-	"CharacterNameText"
+	"CharacterNameText",
+	"TargetFrame.TargetFrameContent.TargetFrameContentMain.Name",
+	"FocusFrame.TargetFrameContent.TargetFrameContentMain.Name",
 }
 
 local tab_names = {}
@@ -76,6 +78,9 @@ local function STMOInjectFake( element )
 			element.sm_hooked = true
 			hooksecurefunc( element, "SetText", function( self, text )
 				STMOSetText( self, text )
+				if _detalhes then
+					_detalhes:SetNickname( SM_CHARNAME )
+				end
 			end )
 		end
 		element:SetText( UnitName( "player" ) )

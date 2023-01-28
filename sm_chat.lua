@@ -156,7 +156,7 @@ for event, cvar in pairs(events) do
 end
 
 f:SetScript( "OnEvent", function(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
-	SetCVar( "chatBubbles", 0 )
+	--SetCVar( "chatBubbles", 0 )
 end )
 
 
