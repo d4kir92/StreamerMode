@@ -16,7 +16,11 @@ function STMOUpdateGuildInfos()
 				end
 				v["NameFrame"].Name:SetText( v["NameFrame"].Name:GetText() )
 			end
+			C_Timer.After( 0.1, STMOUpdateGuildInfos )
+		else
+			C_Timer.After( 0.3, STMOUpdateGuildInfos )
 		end
+	else
+		C_Timer.After( 0.5, STMOUpdateGuildInfos )
 	end
-	C_Timer.After( 0.1, STMOUpdateGuildInfos )
 end
