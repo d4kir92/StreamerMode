@@ -11,13 +11,13 @@ f:SetScript( "OnUpdate", function()
 			SetCVar( "UnitNameOwn", 0 )
 		end
 		if SMGetConvar( "UnitNameFriendlyPlayerName" ) ~= 0 then
-			SetCVar( "UnitNameFriendlyPlayerName", 0 )
+			--SetCVar( "UnitNameFriendlyPlayerName", 0 )
 		end
 		if SMGetConvar( "UnitNameFriendlyMinionName" ) ~= 0 then
-			SetCVar( "UnitNameFriendlyMinionName", 0 )
+			--SetCVar( "UnitNameFriendlyMinionName", 0 )
 		end
 		if SMGetConvar( "UnitNameNonCombatCreatureName" ) ~= 0 then
-			SetCVar( "UnitNameNonCombatCreatureName", 0 )
+			--SetCVar( "UnitNameNonCombatCreatureName", 0 )
 		end
 	end
 end )

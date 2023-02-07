@@ -114,10 +114,12 @@ frame:RegisterEvent( "PLAYER_ENTERING_WORLD" )
 frame:RegisterEvent( "UPDATE_MOUSEOVER_UNIT" )
 frame:RegisterEvent( "INSPECT_READY" )
 frame:RegisterEvent( "ADDON_LOADED" )
+local setup = false
 local function eventHandler(self, event, ...)
 	if event == "PLAYER_ENTERING_WORLD" then
 		local isInitialLogin, isReloadingUi = ...
-		if isInitialLogin or isReloadingUi then
+		if ( isInitialLogin or isReloadingUi ) and not setup then
+			setup = true
 			STMOTABPC = STMOTABPC or {}
 
 			STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"

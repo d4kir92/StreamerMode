@@ -20,7 +20,7 @@ function SMTooltipThink()
 			end
 		end
 	end
-	C_Timer.After( 0.01, SMTooltipThink )
+	C_Timer.After( 0.05, SMTooltipThink )
 end
 C_Timer.After( 0, SMTooltipThink )
 
