@@ -1,28 +1,38 @@
 -- Tooltips
 
-local test = {
-	"GameTooltipTextLeft1",
-	"GameTooltipTextLeft2",
-	"GameTooltipTextLeft3",
-	"GameTooltipTextLeft4",
-	"GameTooltipTextRight1",
-	"GameTooltipTextRight2",
-	"GameTooltipTextRight3",
-	"GameTooltipTextRight4",
-}
-function SMTooltipThink()
-	for i, v in pairs( test ) do
-		local tex = _G[v]
-		if tex then
-			local msg = tex:GetText()
-			if msg then
-				STMOSetText( tex, msg )
+function SMGTThink()
+	for i, tex in pairs( { GameTooltip:GetRegions() } ) do
+		if tex.GetText then
+			if tex then
+				local msg = tex:GetText()
+				if msg then
+					STMOSetText( tex, msg )
+				end
 			end
 		end
 	end
-	C_Timer.After( 0.05, SMTooltipThink )
 end
-C_Timer.After( 0, SMTooltipThink )
+
+if GameTooltip.AddDoubleLine then
+	hooksecurefunc( GameTooltip, "AddDoubleLine", function()
+		SMGTThink()
+	end )
+end
+if GameTooltip.AddLine then
+	hooksecurefunc( GameTooltip, "AddLine", function()
+		SMGTThink()
+	end )
+end
+if GameTooltip.AppendText then
+	hooksecurefunc( GameTooltip, "AppendText", function()
+		SMGTThink()
+	end )
+end
+if GameTooltip.SetText then
+	hooksecurefunc( GameTooltip, "SetText", function()
+		SMGTThink()
+	end )
+end
 
 local f = CreateFrame( "FRAME" )
 f:SetScript( "OnUpdate", function()
