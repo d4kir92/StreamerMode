@@ -1,5 +1,5 @@
 ## Interface: 30401
-## Version: 1.0.18
+## Version: 1.0.19
 ## Title: StreamerMode |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
 ## Author: D4KiR

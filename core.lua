@@ -19,6 +19,7 @@ local tab_text = {
 	"TargetFrame.TargetFrameContent.TargetFrameContentMain.Name",
 	"FocusFrame.TargetFrameContent.TargetFrameContentMain.Name",
 	"TargetFrameToT.Name",
+	"FocusFrameTot.Name",
 }
 
 local tab_names = {}
