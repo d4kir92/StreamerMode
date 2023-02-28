@@ -35,7 +35,7 @@ hooksecurefunc( "CompactUnitFrame_UpdateName", function(frame)
 			end )
 		end
 		local pn = UnitName( "player" )
-		if frame.name:GetText() then
+		if frame.name:GetText() and strfind( frame.name:GetText(), SM_CHARNAME, 1, true ) then
 			frame.name:SetText( SMReplaceCharname( pn, frame.name:GetText(), SM_CHARNAME ) )
 		end
 		if UnitIsPlayer(frame.unit) then

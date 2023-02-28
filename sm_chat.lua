@@ -71,13 +71,23 @@ ChatFrame1HideChat:SetScript( "OnClick", function( self, state )
 	end
 end )
 
+
+
 -- CHAT
 function SMReplaceCharname( pn, msg, reppn )
 	local s, e = strlower( msg ):find( strlower( pn ) )
 	if s then
 		local b = string.sub( msg, 1, s - 1 )
 		local a = string.sub( msg, e + 1 )
-		return SMReplaceCharname( pn, b .. reppn .. a, reppn )
+		if b and a then
+			return SMReplaceCharname( pn, b .. reppn .. a, reppn )
+		elseif b then
+			return SMReplaceCharname( pn, b .. reppn, reppn )
+		elseif a then
+			return SMReplaceCharname( pn, reppn .. a, reppn )
+		else
+			return SMReplaceCharname( pn, reppn, reppn )
+		end
 	else
 		return msg
 	end
