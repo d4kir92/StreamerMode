@@ -74,19 +74,23 @@ end )
 
 
 -- CHAT
-function SMReplaceCharname( pn, msg, reppn )
+function SMReplaceCharname( msg, pn, reppn )
+	if msg == reppn then
+		return msg
+	end
+
 	local s, e = strlower( msg ):find( strlower( pn ) )
 	if s then
 		local b = string.sub( msg, 1, s - 1 )
 		local a = string.sub( msg, e + 1 )
 		if b and a then
-			return SMReplaceCharname( pn, b .. reppn .. a, reppn )
+			return SMReplaceCharname( b .. reppn .. a, 	pn, reppn )
 		elseif b then
-			return SMReplaceCharname( pn, b .. reppn, reppn )
+			return SMReplaceCharname( b .. reppn, 		pn, reppn )
 		elseif a then
-			return SMReplaceCharname( pn, reppn .. a, reppn )
+			return SMReplaceCharname( reppn .. a, 		pn, reppn )
 		else
-			return SMReplaceCharname( pn, reppn, reppn )
+			return msg
 		end
 	else
 		return msg
@@ -96,7 +100,7 @@ end
 local function myChatFilter(self, event, msg, author, ...)
 	local pn = UnitName( "player" )
 	if strlower( msg ):find( strlower( pn ) ) then
-		msg = SMReplaceCharname( pn, msg, SM_CHARNAME )
+		msg = SMReplaceCharname( msg, pn, SM_CHARNAME )
 		return false, msg, SM_CHARNAME, ...
 	end
 	if author:find(pn) then
@@ -108,7 +112,7 @@ local function myChatFilter(self, event, msg, author, ...)
 		local class = UnitClass( "party" .. i )
 		if name then
 			if strlower( msg ):find( strlower( name ) ) then
-				msg = SMReplaceCharname( name, msg, class )
+				msg = SMReplaceCharname( msg, name, class )
 				return false, msg, class, ...
 			end
 			if author:find(name) then
@@ -177,7 +181,7 @@ if QuestInfoObjectivesText then
 		if self.smsettext then return end
 		self.smsettext = true
 		local pn = UnitName( "player" )
-		self:SetText( SMReplaceCharname( pn, text, SM_CHARNAME ) )
+		self:SetText( SMReplaceCharname( text, pn, SM_CHARNAME ) )
 		self.smsettext = false
 	end )
 end
@@ -187,7 +191,7 @@ if QuestInfoDescriptionText then
 		if self.smsettext then return end
 		self.smsettext = true
 		local pn = UnitName( "player" )
-		self:SetText( SMReplaceCharname( pn, text, SM_CHARNAME ) )
+		self:SetText( SMReplaceCharname( text, pn, SM_CHARNAME ) )
 		self.smsettext = false
 	end )
 end
