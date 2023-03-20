@@ -29,7 +29,7 @@ local tab_classes = {}
 function STMOSetText( self, text )
 	if self.sm_settext then return end
 	self.sm_settext = true
-	--print(self:GetName(), text)
+
 	local pn, re = UnitName( "player" )
 	local msg = text or self:GetText() or ""
 
