@@ -36,7 +36,11 @@ end
 
 local f = CreateFrame( "FRAME" )
 f:SetScript( "OnUpdate", function()
-	if DropDownList1Button1NormalText:GetText() then
-		STMOSetText( DropDownList1Button1NormalText, DropDownList1Button1NormalText:GetText() )
+	local text = DropDownList1Button1NormalText:GetText()
+	if text then
+		if f.text ~= text then
+			f.text = text
+			STMOSetText( DropDownList1Button1NormalText, text )
+		end
 	end
 end )

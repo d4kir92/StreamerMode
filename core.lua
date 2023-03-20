@@ -1,7 +1,7 @@
 -- By D4KiR
 
 -- CONFIG
-SM_CHARNAME = "TEST"
+SM_CHARNAME = "RENAMEME"
 -- CONFIG
 
 function STMOMsg( msg )
@@ -20,6 +20,7 @@ local tab_text = {
 	"FocusFrame.TargetFrameContent.TargetFrameContentMain.Name",
 	"TargetFrameToT.Name",
 	"FocusFrameToT.Name",
+	"MacroFrameTab2.Text",
 }
 
 local tab_names = {}
@@ -28,8 +29,10 @@ local tab_classes = {}
 function STMOSetText( self, text )
 	if self.sm_settext then return end
 	self.sm_settext = true
+	--print(self:GetName(), text)
 	local pn, re = UnitName( "player" )
 	local msg = text or self:GetText() or ""
+
 	if msg and msg:find( pn ) then
 		msg = string.gsub( msg, pn, SM_CHARNAME )
 		if re then
@@ -85,7 +88,7 @@ local function STMOInjectFake( element )
 				end
 			end )
 		end
-		element:SetText( UnitName( "player" ) )
+		element:SetText( element:GetText() )
 	else
 		STMOMsg( "|cffff0000" .. "ELEMENT INVALID: |r" .. tostring( element ) )
 	end
@@ -102,7 +105,6 @@ local function STMOUpdateNames()
 				element = element[v]
 			end
 		end
-
 		if element then
 			STMOInjectFake( element )
 		else
@@ -140,19 +142,23 @@ local function eventHandler(self, event, ...)
 		end
 	elseif event == "ADDON_LOADED" then
 		local addonName = ...
-		if not addonName or addonName ~= "Blizzard_Communities" then
+		if not addonName then
 			return
 		end
-
-		local element = _G["CommunitiesFrame"]
-		if element then
-			element = element["GuildMemberDetailFrame"]
+		if addonName == "Blizzard_Communities" then
+			local element = _G["CommunitiesFrame"]
 			if element then
-				element = element["Name"]
+				element = element["GuildMemberDetailFrame"]
 				if element then
-					STMOInjectFake( element )
+					element = element["Name"]
+					if element then
+						STMOInjectFake( element )
+					end
 				end
 			end
+		end
+		if addonName == "Blizzard_MacroUI" then
+			STMOUpdateNames()
 		end
 	end
 	for i = 1, 4 do
