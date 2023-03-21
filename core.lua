@@ -21,6 +21,9 @@ local tab_text = {
 	"TargetFrameToT.Name",
 	"FocusFrameToT.Name",
 	"MacroFrameTab2.Text",
+
+	-- Addons
+	"MacroToolkitFrameTab2.Text",
 }
 
 local tab_names = {}
