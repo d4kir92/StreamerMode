@@ -11,7 +11,10 @@ function SMPVPScoreboard()
 				hooksecurefunc( element, "SetText", function( self, text )
 					if text then
 						STMOSetText( self, text )
+					else
+						STMOSetText( self, self.oldtext or "" )
 					end
+					self.oldtext = text or ""
 				end )
 			end
 			element:SetText( element:GetText() )
