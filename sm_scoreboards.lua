@@ -1,27 +1,28 @@
 -- Scoreboards
-
 --LoadAddOn("Blizzard_PVPMatch")
 function SMPVPScoreboard()
 	if PVPCellNameMixin then
-		hooksecurefunc( PVPCellNameMixin, "Populate", function( self, rowData, dataIndex )
-			local name = rowData.name;
-			local element = self.text;
+		hooksecurefunc(PVPCellNameMixin, "Populate", function(self, rowData, dataIndex)
+			local element = self.text
+
 			if element.sm_hooked == nil then
 				element.sm_hooked = true
-				hooksecurefunc( element, "SetText", function( self, text )
+
+				hooksecurefunc(element, "SetText", function(sel, text)
 					if text then
-						STMOSetText( self, text )
+						STMOSetText(sel, text)
 					else
-						STMOSetText( self, self.oldtext or "" )
+						STMOSetText(sel, sel.oldtext or "")
 					end
-					self.oldtext = text or ""
-				end )
+
+					sel.oldtext = text or ""
+				end)
 			end
-			element:SetText( element:GetText() )
-		end )
-	else
-		--STMOMsg( "PVPCellNameMixin not found!" )
+
+			element:SetText(element:GetText())
+		end)
 	end
 end
+
 SMPVPScoreboard()
 --PVPMatchResults:Show()
