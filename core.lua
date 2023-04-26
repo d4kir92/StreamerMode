@@ -59,7 +59,7 @@ function STMOSetText(self, text)
 
 				if realm then
 					mmsg = string.gsub(mmsg, realm, "")
-					mmsg = string.gsub(msmmsgg, "-", "")
+					mmsg = string.gsub(mmsg, "-", "")
 				end
 
 				self:SetText(mmsg)
