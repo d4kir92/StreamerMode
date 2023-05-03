@@ -4,7 +4,7 @@
 ## Interface: 100100
 
 ## Version: 1.0.31
-## Title: StreamerMode |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
+## Title: StreamerMode by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
 ## Author: D4KiR
 ## DefaultState: enabled
@@ -12,6 +12,7 @@
 ## SavedVariablesPerCharacter: STMOTABPC
 ## X-Curse-Project-ID: 573691
 ## X-Wago-ID: baND79Go
+## IconTexture: 132150
 
 core.lua
 sm_chat.lua
