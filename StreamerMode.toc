@@ -1,9 +1,9 @@
 ## Interface-Classic: 11403
 ## Interface-BCC: 20504
-## Interface-Wrath: 30401
+## Interface-Wrath: 30402
 ## Interface: 100100
 
-## Version: 1.0.32
+## Version: 1.0.33
 ## Title: StreamerMode by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
 ## Author: D4KiR
