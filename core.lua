@@ -96,7 +96,8 @@ function StreamerMode:InjectText(element)
 					text = text or ""
 					STMOSetText(sel, text)
 					if _detalhes then
-						_detalhes:SetNickname(text)
+						-- DETAILS
+						_detalhes:SetNickname(SM_CHARNAME)
 					end
 				end
 			)
@@ -142,7 +143,7 @@ local function Init()
 		STMOTABPC = STMOTABPC or {}
 		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 		SM_CHARNAME = STMOTABPC["charname"]
-		StreamerMode:SetVersion(132150, "1.1.4")
+		StreamerMode:SetVersion(132150, "1.1.5")
 		StreamerMode:SetAddonOutput("StreamerMode", 132150)
 		StreamerMode:CreateMinimapButton(
 			{
