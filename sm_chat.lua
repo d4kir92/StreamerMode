@@ -5,84 +5,87 @@ ChatFrame1HideChat = CreateFrame("Button", ChatFrame1, UIParent)
 ChatFrame1HideChat:SetFrameStrata("LOW")
 ChatFrame1HideChat:SetSize(32, 32)
 ChatFrame1HideChat:SetPoint("TOPRIGHT", ChatFrame1, "BOTTOMLEFT", -10, -10)
-
-ChatFrame1HideChat:HookScript("OnUpdate", function(self)
-	self:SetScale(UIParent:GetScale())
-end)
+ChatFrame1HideChat:HookScript(
+	"OnUpdate",
+	function(self)
+		self:SetScale(UIParent:GetScale())
+	end
+)
 
 ChatFrame1HideChat:SetNormalTexture("Interface\\AddOns\\StreamerMode\\media\\visibility")
 local br = 0.0
 ChatFrame1HideChat:GetNormalTexture():SetTexCoord(-br, 1 + br, -br, 1 + br)
-
 local function SMUpdateActiveChatWindows()
 	for i = 1, 20 do
 		local tab = _G["ChatFrame" .. i .. "Tab"]
-
 		if tab and tab:IsShown() then
-			hooksecurefunc(tab, "Show", function(self)
-				if not sm_chat_visible then
-					self:Hide()
+			hooksecurefunc(
+				tab,
+				"Show",
+				function(self)
+					if not sm_chat_visible then
+						self:Hide()
+					end
 				end
-			end)
+			)
 
 			tab.active = true
 		end
 	end
 end
 
-hooksecurefunc(ChatFrame1, "Show", function(self)
-	if not sm_chat_visible then
-		self:Hide()
+hooksecurefunc(
+	ChatFrame1,
+	"Show",
+	function(self)
+		if not sm_chat_visible then
+			self:Hide()
+		end
 	end
-end)
+)
 
 SMUpdateActiveChatWindows()
 ChatFrame1HideChat.show = sm_chat_visible
-
-ChatFrame1HideChat:SetScript("OnClick", function(self, state)
-	self.show = not self.show
-
-	if self.show then
-		sm_chat_visible = true
-
-		for i = 1, 20 do
-			local tab = _G["ChatFrame" .. i .. "Tab"]
-
-			if tab and tab.active then
-				tab:Show()
+ChatFrame1HideChat:SetScript(
+	"OnClick",
+	function(self, state)
+		self.show = not self.show
+		if self.show then
+			sm_chat_visible = true
+			for i = 1, 20 do
+				local tab = _G["ChatFrame" .. i .. "Tab"]
+				if tab and tab.active then
+					tab:Show()
+				end
 			end
-		end
 
-		SMUpdateActiveChatWindows()
-		ChatFrame1:Show()
-		--ChatFrame1EditBox:Show()
-		ChatFrame1HideChat:SetNormalTexture("Interface\\AddOns\\StreamerMode\\media\\visibility")
-	else
-		sm_chat_visible = false
-
-		for i = 1, 10 do
-			local tab = _G["ChatFrame" .. i .. "Tab"]
-
-			if tab.active then
-				tab:Hide()
+			SMUpdateActiveChatWindows()
+			ChatFrame1:Show()
+			--ChatFrame1EditBox:Show()
+			ChatFrame1HideChat:SetNormalTexture("Interface\\AddOns\\StreamerMode\\media\\visibility")
+		else
+			sm_chat_visible = false
+			for i = 1, 10 do
+				local tab = _G["ChatFrame" .. i .. "Tab"]
+				if tab.active then
+					tab:Hide()
+				end
 			end
-		end
 
-		ChatFrame1:Hide()
-		--ChatFrame1EditBox:Hide()
-		ChatFrame1HideChat:SetNormalTexture("Interface\\AddOns\\StreamerMode\\media\\visibility_off")
+			ChatFrame1:Hide()
+			--ChatFrame1EditBox:Hide()
+			ChatFrame1HideChat:SetNormalTexture("Interface\\AddOns\\StreamerMode\\media\\visibility_off")
+		end
 	end
-end)
+)
 
 -- CHAT
 function SMReplaceCharname(msg, pn, reppn)
 	if msg == reppn then return msg end
 	local s, e = strlower(msg):find(strlower(pn))
-
 	if s then
 		local b = string.sub(msg, 1, s - 1)
 		local a = string.sub(msg, e + 1)
-
 		if b and a then
 			return SMReplaceCharname(b .. reppn .. a, pn, reppn)
 		elseif b then
@@ -99,7 +102,6 @@ end
 
 local function myChatFilter(self, event, msg, author, ...)
 	local pn = UnitName("player")
-
 	if strlower(msg):find(strlower(pn)) then
 		msg = SMReplaceCharname(msg, pn, SM_CHARNAME)
 
@@ -107,11 +109,9 @@ local function myChatFilter(self, event, msg, author, ...)
 	end
 
 	if author:find(pn) then return false, msg, SM_CHARNAME, ... end
-
 	for i = 1, 4 do
 		local name = UnitName("party" .. i)
 		local class = UnitClass("party" .. i)
-
 		if name then
 			if strlower(msg):find(strlower(name)) then
 				msg = SMReplaceCharname(msg, name, class)
@@ -144,7 +144,6 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD_ITEM_LOOTED", myChatFilter)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_LOOT", myChatFilter)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_SKILL", myChatFilter)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_XP_GAIN", myChatFilter)
-
 -- CHAT BUBBLES
 local events = {
 	CHAT_MSG_SAY = "chatBubbles",
@@ -157,30 +156,36 @@ local events = {
 }
 
 local f = CreateFrame("Frame")
-
 for event, cvar in pairs(events) do
 	f:RegisterEvent(event)
 end
 
 f:SetScript("OnEvent", function(self, event, msg, sender, _, _, _, _, _, _, _, _, _, guid) end) --SetCVar( "chatBubbles", 0 )
-
 -- QUESTS
 if QuestInfoObjectivesText then
-	hooksecurefunc(QuestInfoObjectivesText, "SetText", function(self, text)
-		if self.smsettext then return end
-		self.smsettext = true
-		local pn = UnitName("player")
-		self:SetText(SMReplaceCharname(text, pn, SM_CHARNAME))
-		self.smsettext = false
-	end)
+	hooksecurefunc(
+		QuestInfoObjectivesText,
+		"SetText",
+		function(self, text)
+			if self.smsettext then return end
+			self.smsettext = true
+			local pn = UnitName("player")
+			self:SetText(SMReplaceCharname(text, pn, SM_CHARNAME))
+			self.smsettext = false
+		end
+	)
 end
 
 if QuestInfoDescriptionText then
-	hooksecurefunc(QuestInfoDescriptionText, "SetText", function(self, text)
-		if self.smsettext then return end
-		self.smsettext = true
-		local pn = UnitName("player")
-		self:SetText(SMReplaceCharname(text, pn, SM_CHARNAME))
-		self.smsettext = false
-	end)
+	hooksecurefunc(
+		QuestInfoDescriptionText,
+		"SetText",
+		function(self, text)
+			if self.smsettext then return end
+			self.smsettext = true
+			local pn = UnitName("player")
+			self:SetText(SMReplaceCharname(text, pn, SM_CHARNAME))
+			self.smsettext = false
+		end
+	)
 end

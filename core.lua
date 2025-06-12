@@ -12,7 +12,7 @@ function STMOSetText(self, text)
 	self.sm_settext = true
 	local pn, re = UnitName("player")
 	local msg = text or self:GetText() or ""
-	if msg and (msg:find(pn) or (text and msg:find(text))) then
+	if msg and msg:find(pn) or self == PlayerName then
 		msg = string.gsub(msg, pn, SM_CHARNAME)
 		if text then
 			msg = string.gsub(msg, text, SM_CHARNAME)
@@ -35,23 +35,46 @@ function STMOSetText(self, text)
 
 			self:SetText(msg)
 		else
-			for i = 1, 4 do
-				local name, realm = UnitName("party" .. i)
-				if name or tab_names["party" .. i] then
-					tab_names["party" .. i] = name or tab_names["party" .. i]
-					name = name or tab_names["party" .. i]
-					local class, _ = UnitClass("party" .. i)
-					tab_classes["party" .. i] = class or tab_classes["party" .. i]
-					class = tab_classes["party" .. i]
-					local mmsg = text or self:GetText() or ""
-					if name and class and mmsg and mmsg:find(name) then
-						mmsg = string.gsub(mmsg, name, class)
-						if realm then
-							mmsg = string.gsub(mmsg, realm, "")
-							mmsg = string.gsub(mmsg, "-", "")
-						end
+			if IsInRaid() then
+				for i = 1, 40 do
+					local name, realm = UnitName("raid" .. i)
+					if name or tab_names["raid" .. i] then
+						tab_names["raid" .. i] = name or tab_names["raid" .. i]
+						name = name or tab_names["raid" .. i]
+						local class, _ = UnitClass("raid" .. i)
+						tab_classes["raid" .. i] = class or tab_classes["raid" .. i]
+						class = tab_classes["raid" .. i]
+						local mmsg = text or self:GetText() or ""
+						if name and class and mmsg and mmsg:find(name) then
+							mmsg = string.gsub(mmsg, name, class .. " " .. i)
+							if realm then
+								mmsg = string.gsub(mmsg, realm, "")
+								mmsg = string.gsub(mmsg, "-", "")
+							end
 
-						self:SetText(mmsg)
+							self:SetText(mmsg)
+						end
+					end
+				end
+			else
+				for i = 1, 4 do
+					local name, realm = UnitName("party" .. i)
+					if name or tab_names["party" .. i] then
+						tab_names["party" .. i] = name or tab_names["party" .. i]
+						name = name or tab_names["party" .. i]
+						local class, _ = UnitClass("party" .. i)
+						tab_classes["party" .. i] = class or tab_classes["party" .. i]
+						class = tab_classes["party" .. i]
+						local mmsg = text or self:GetText() or ""
+						if name and class and mmsg and mmsg:find(name) then
+							mmsg = string.gsub(mmsg, name, class .. " " .. i)
+							if realm then
+								mmsg = string.gsub(mmsg, realm, "")
+								mmsg = string.gsub(mmsg, "-", "")
+							end
+
+							self:SetText(mmsg)
+						end
 					end
 				end
 			end
@@ -61,24 +84,28 @@ function STMOSetText(self, text)
 	self.sm_settext = false
 end
 
-local function STMOInjectFake(element)
+local injects = {}
+function StreamerMode:InjectText(element)
 	if element then
 		if element.sm_hooked == nil then
 			element.sm_hooked = true
 			hooksecurefunc(
 				element,
 				"SetText",
-				function(self, text)
+				function(sel, text)
 					text = text or ""
-					STMOSetText(self, text)
+					STMOSetText(sel, text)
 					if _detalhes then
-						_detalhes:SetNickname(SM_CHARNAME)
+						_detalhes:SetNickname(text)
 					end
 				end
 			)
 		end
 
-		element:SetText(element:GetText())
+		element:SetText(StreamerMode:GetText(element))
+		if not tContains(injects, element) then
+			tinsert(injects, element)
+		end
 	else
 		StreamerMode:MSG("|cffff0000" .. "ELEMENT INVALID: |r" .. tostring(element))
 	end
@@ -97,7 +124,13 @@ local function STMOUpdateNames()
 		end
 
 		if element then
-			STMOInjectFake(element)
+			StreamerMode:InjectText(element)
+		end
+	end
+
+	for i, element in pairs(injects) do
+		if element then
+			StreamerMode:InjectText(element)
 		end
 	end
 end
@@ -130,7 +163,7 @@ local function eventHandler(self, event, ...)
 	elseif event == "INSPECT_READY" then
 		local element = _G["InspectFrameTitleText"]
 		if element then
-			STMOInjectFake(element)
+			StreamerMode:InjectText(element)
 		end
 	elseif event == "ADDON_LOADED" then
 		local addonName = ...
@@ -142,7 +175,7 @@ local function eventHandler(self, event, ...)
 				if element then
 					element = element["Name"]
 					if element then
-						STMOInjectFake(element)
+						StreamerMode:InjectText(element)
 					end
 				end
 			end
@@ -153,7 +186,7 @@ local function eventHandler(self, event, ...)
 		end
 
 		if addonName == AddonName then
-			StreamerMode:SetVersion(132150, "1.1.1")
+			StreamerMode:SetVersion(132150, "1.1.2")
 			StreamerMode:SetAddonOutput("StreamerMode", 132150)
 			StreamerMode:CreateMinimapButton(
 				{
@@ -183,7 +216,7 @@ local function eventHandler(self, event, ...)
 		if element then
 			local name = UnitName("party" .. i)
 			if name then
-				STMOInjectFake(element, name)
+				StreamerMode:InjectText(element)
 			end
 		end
 	end
@@ -193,7 +226,7 @@ local function eventHandler(self, event, ...)
 		if element then
 			local name = UnitName("raid" .. i)
 			if name then
-				STMOInjectFake(element, name)
+				StreamerMode:InjectText(element)
 			end
 		end
 	end
