@@ -8,8 +8,31 @@ local f = CreateFrame("FRAME")
 f:SetScript(
 	"OnUpdate",
 	function()
-		if not InCombatLockdown() and SMGetConvar("UnitNameOwn") ~= 0 then
-			SetCVar("UnitNameOwn", 0)
+		if not InCombatLockdown() then
+			if SMGetConvar("UnitNameOwn") ~= 0 then
+				SetCVar("UnitNameOwn", 0)
+				StreamerMode:MSG("Set UnitNameOwn to 0: Addons cant hide those names")
+			end
+
+			if SMGetConvar("UnitNameFriendlyPlayerName") ~= 0 then
+				SetCVar("UnitNameFriendlyPlayerName", 0)
+				StreamerMode:MSG("Set UnitNameFriendlyPlayerName to 0: Addons cant hide those names")
+			end
+
+			if SMGetConvar("UnitNameFriendlyMinionName") ~= 0 then
+				SetCVar("UnitNameFriendlyMinionName", 0)
+				StreamerMode:MSG("Set UnitNameFriendlyMinionName to 0: Addons cant hide those names")
+			end
+
+			if SMGetConvar("UnitNameNonCombatCreatureName") ~= 0 then
+				SetCVar("UnitNameNonCombatCreatureName", 0)
+				StreamerMode:MSG("Set UnitNameNonCombatCreatureName to 0: Addons cant hide those names")
+			end
+
+			if SMGetConvar("UnitNameEnemyPlayerName") ~= 0 then
+				SetCVar("UnitNameEnemyPlayerName", 0)
+				StreamerMode:MSG("Set UnitNameEnemyPlayerName to 0: Addons cant hide those names")
+			end
 		end
 	end
 )

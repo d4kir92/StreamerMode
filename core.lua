@@ -186,7 +186,7 @@ local function eventHandler(self, event, ...)
 		end
 
 		if addonName == AddonName then
-			StreamerMode:SetVersion(132150, "1.1.2")
+			StreamerMode:SetVersion(132150, "1.1.3")
 			StreamerMode:SetAddonOutput("StreamerMode", 132150)
 			StreamerMode:CreateMinimapButton(
 				{
