@@ -1,11 +1,8 @@
 -- By D4KiR
+local AddonName, StreamerMode = ...
 -- CONFIG
 SM_CHARNAME = "RENAMEME"
 -- CONFIG
-local function STMOMsg(msg)
-	print("|cff3FC7EB[|T132150:16:16:0:0|t |r|cffffff00S|r|cff3FC7EBtreamer|r|cffffff00M|r|cff3FC7EBode]|r " .. msg)
-end
-
 local tab_text = {"PlayerName", "TargetFrameTextureFrameName", "FocusFrameTextureFrameName", "TargetFrameToTTextureFrameName", "FocusFrameToTTextureFrameName", "CharacterFrameTitleText", "CharacterNameText", "TargetFrame.TargetFrameContent.TargetFrameContentMain.Name", "FocusFrame.TargetFrameContent.TargetFrameContentMain.Name", "TargetFrameToT.Name", "FocusFrameToT.Name", "MacroFrameTab2.Text", "MacroToolkitFrameTab2.Text",}
 -- Addons
 local tab_names = {}
@@ -15,44 +12,48 @@ function STMOSetText(self, text)
 	self.sm_settext = true
 	local pn, re = UnitName("player")
 	local msg = text or self:GetText() or ""
-	if msg and msg:find(pn) then
+	if msg and (msg:find(pn) or (text and msg:find(text))) then
 		msg = string.gsub(msg, pn, SM_CHARNAME)
+		if text then
+			msg = string.gsub(msg, text, SM_CHARNAME)
+		end
+
 		if re then
 			msg = string.gsub(msg, re, "")
 			msg = string.gsub(msg, "-", "")
 		end
 
 		self:SetText(msg)
-	end
+	else
+		local petn, petre = UnitName("pet")
+		if petn and msg and msg:find(petn) then
+			msg = string.gsub(msg, petn, string.format(UNITNAME_TITLE_MINION, SM_CHARNAME))
+			if petre then
+				msg = string.gsub(msg, petre, "")
+				msg = string.gsub(msg, "-", "")
+			end
 
-	local petn, petre = UnitName("pet")
-	if petn and msg and msg:find(petn) then
-		msg = string.gsub(msg, petn, string.format(UNITNAME_TITLE_MINION, SM_CHARNAME))
-		if petre then
-			msg = string.gsub(msg, petre, "")
-			msg = string.gsub(msg, "-", "")
-		end
+			self:SetText(msg)
+		else
+			for i = 1, 4 do
+				local name, realm = UnitName("party" .. i)
+				if name or tab_names["party" .. i] then
+					tab_names["party" .. i] = name or tab_names["party" .. i]
+					name = name or tab_names["party" .. i]
+					local class, _ = UnitClass("party" .. i)
+					tab_classes["party" .. i] = class or tab_classes["party" .. i]
+					class = tab_classes["party" .. i]
+					local mmsg = text or self:GetText() or ""
+					if name and class and mmsg and mmsg:find(name) then
+						mmsg = string.gsub(mmsg, name, class)
+						if realm then
+							mmsg = string.gsub(mmsg, realm, "")
+							mmsg = string.gsub(mmsg, "-", "")
+						end
 
-		self:SetText(msg)
-	end
-
-	for i = 1, 4 do
-		local name, realm = UnitName("party" .. i)
-		if name or tab_names["party" .. i] then
-			tab_names["party" .. i] = name or tab_names["party" .. i]
-			name = name or tab_names["party" .. i]
-			local class, _ = UnitClass("party" .. i)
-			tab_classes["party" .. i] = class or tab_classes["party" .. i]
-			class = tab_classes["party" .. i]
-			local mmsg = text or self:GetText() or ""
-			if name and class and mmsg and mmsg:find(name) then
-				mmsg = string.gsub(mmsg, name, class)
-				if realm then
-					mmsg = string.gsub(mmsg, realm, "")
-					mmsg = string.gsub(mmsg, "-", "")
+						self:SetText(mmsg)
+					end
 				end
-
-				self:SetText(mmsg)
 			end
 		end
 	end
@@ -78,7 +79,7 @@ local function STMOInjectFake(element)
 
 		element:SetText(element:GetText())
 	else
-		STMOMsg("|cffff0000" .. "ELEMENT INVALID: |r" .. tostring(element))
+		StreamerMode:MSG("|cffff0000" .. "ELEMENT INVALID: |r" .. tostring(element))
 	end
 end
 
@@ -114,7 +115,12 @@ local function eventHandler(self, event, ...)
 			STMOTABPC = STMOTABPC or {}
 			STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 			SM_CHARNAME = STMOTABPC["charname"]
-			STMOMsg("LOADED -> /sm")
+			STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] or 0
+			STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] + 1
+			if STMOTABPC["COUNTSETTINGS"] < 10 then
+				StreamerMode:MSG("LOADED -> /sm")
+			end
+
 			STMOUpdateNames()
 			if STMOUpdateGuildInfos then
 				STMOUpdateGuildInfos()
@@ -144,6 +150,31 @@ local function eventHandler(self, event, ...)
 		if addonName == "Blizzard_MacroUI" then
 			STMOUpdateNames()
 		end
+
+		if addonName == AddonName then
+			StreamerMode:SetVersion(132150, "1.1.0")
+			StreamerMode:SetAddonOutput("StreamerMode", 132150)
+			StreamerMode:CreateMinimapButton(
+				{
+					["name"] = "StreamerMode",
+					["icon"] = 132150,
+					["var"] = mmbtn,
+					["dbtab"] = STMOTABPC,
+					["vTT"] = {{"|T132150:16:16:0:0|t S|cff3FC7EBtreamer|rM|cff3FC7EBode|r by |cff3FC7EBD4KiR", "v|cff3FC7EB" .. StreamerMode:GetVersion()}, {StreamerMode:Trans("LID_LEFTCLICK"), StreamerMode:Trans("LID_OPENSETTINGS")}, {StreamerMode:Trans("LID_RIGHTCLICK"), StreamerMode:Trans("LID_HIDEMINIMAPBUTTON")}},
+					["funcL"] = function()
+						StreamerMode:ToggleSettings()
+					end,
+					["funcR"] = function()
+						StreamerMode:SV(STMOTABPC, "SHOWMINIMAPBUTTON", false)
+						StreamerMode:HideMMBtn("StreamerMode")
+						StreamerMode:MSG("Minimap Button is now hidden.")
+					end,
+					["dbkey"] = "SHOWMINIMAPBUTTON"
+				}
+			)
+
+			StreamerMode:InitSettings()
+		end
 	end
 
 	for i = 1, 4 do
@@ -167,45 +198,83 @@ local function eventHandler(self, event, ...)
 	end
 end
 
-frame:SetScript("OnEvent", eventHandler)
-SLASH_STREAMERMODE1 = "/sm"
-SlashCmdList["STREAMERMODE"] = function(msg)
+local function Rename(msg)
 	STMOTABPC = STMOTABPC or {}
 	local args = {string.split(" ", msg)}
-	if args[1] then
-		args[1] = strlower(args[1])
-		if strlower(args[1]) == "rename" then
-			local hide = false
-			if args[2] == nil then
-				args[2] = ""
-				STMOMsg("[RENAME] HIDING NAME")
-				hide = true
-			end
-
-			if args[2] then
-				STMOTABPC["charname"] = args[2]
-				SM_CHARNAME = STMOTABPC["charname"]
-				if not hide then
-					STMOMsg("|cff00ff00Renamed Character to: |r" .. args[2])
-				end
-
-				STMOUpdateNames()
-			else
-				STMOMsg("[RENAME] Missing Name")
-			end
-
-			return true
+	if args[1] ~= "" and SM_CHARNAME ~= args[1] then
+		if args[1] then
+			STMOTABPC["charname"] = args[1]
+			SM_CHARNAME = STMOTABPC["charname"]
+			StreamerMode:MSG("|cff00ff00Renamed Character to: |r" .. args[1])
+			STMOUpdateNames()
+		else
+			StreamerMode:MSG("[RENAME] Missing Name")
 		end
 	end
 
-	STMOMsg("----------------------------------------")
-	STMOMsg("HELP:")
-	STMOMsg("/sm rename NAME - Renames the current Character")
-	STMOMsg("----------------------------------------")
+	return true
+end
+
+local sm_settings = nil
+function StreamerMode:ToggleSettings()
+	if sm_settings then
+		if sm_settings:IsShown() then
+			sm_settings:Hide()
+		else
+			sm_settings:Show()
+		end
+	end
+end
+
+function StreamerMode:InitSettings()
+	sm_settings = StreamerMode:CreateFrame(
+		{
+			["name"] = "StreamerMode",
+			["pTab"] = {"CENTER"},
+			["sw"] = 520,
+			["sh"] = 520,
+			["title"] = format("S|cff3FC7EBtreamer|rM|cff3FC7EBode|r |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t v|cff3FC7EB%s", StreamerMode:GetVersion())
+		}
+	)
+
+	local x = 15
+	local y = 10
+	StreamerMode:SetAppendX(x)
+	StreamerMode:SetAppendY(y)
+	StreamerMode:SetAppendParent(sm_settings)
+	StreamerMode:SetAppendTab(STMOTABPC)
+	StreamerMode:AppendCategory("GENERAL")
+	StreamerMode:AppendCheckbox(
+		"SHOWMINIMAPBUTTON",
+		StreamerMode:GetWoWBuild() ~= "RETAIL",
+		function()
+			if StreamerMode:GV(STMOTABPC, "SHOWMINIMAPBUTTON", StreamerMode:GetWoWBuild() ~= "RETAIL") then
+				StreamerMode:ShowMMBtn("StreamerMode")
+			else
+				StreamerMode:HideMMBtn("StreamerMode")
+			end
+		end
+	)
+
+	StreamerMode:AppendEditbox(
+		"charname",
+		"RENAMEME",
+		function(sel, val)
+			Rename(val)
+		end, x + 10
+	)
+end
+
+local function Slash()
+	STMOTABPC = STMOTABPC or {}
+	StreamerMode:ToggleSettings()
 
 	return false
 end
 
+frame:SetScript("OnEvent", eventHandler)
+StreamerMode:AddSlash("sm", Slash)
+StreamerMode:AddSlash("streamermode", Slash)
 hooksecurefunc(
 	FriendsFrameBattlenetFrame.Tag,
 	"SetText",
