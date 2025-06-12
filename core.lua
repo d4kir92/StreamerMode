@@ -135,30 +135,58 @@ local function STMOUpdateNames()
 	end
 end
 
+local inited = false
+local function Init()
+	if inited == false then
+		inited = true
+		STMOTABPC = STMOTABPC or {}
+		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
+		SM_CHARNAME = STMOTABPC["charname"]
+		StreamerMode:SetVersion(132150, "1.1.4")
+		StreamerMode:SetAddonOutput("StreamerMode", 132150)
+		StreamerMode:CreateMinimapButton(
+			{
+				["name"] = "StreamerMode",
+				["icon"] = 132150,
+				["var"] = mmbtn,
+				["dbtab"] = STMOTABPC,
+				["vTT"] = {{"|T132150:16:16:0:0|t S|cff3FC7EBtreamer|rM|cff3FC7EBode|r by |cff3FC7EBD4KiR", "v|cff3FC7EB" .. StreamerMode:GetVersion()}, {StreamerMode:Trans("LID_LEFTCLICK"), StreamerMode:Trans("LID_OPENSETTINGS")}, {StreamerMode:Trans("LID_RIGHTCLICK"), StreamerMode:Trans("LID_HIDEMINIMAPBUTTON")}},
+				["funcL"] = function()
+					StreamerMode:ToggleSettings()
+				end,
+				["funcR"] = function()
+					StreamerMode:SV(STMOTABPC, "SHOWMINIMAPBUTTON", false)
+					StreamerMode:HideMMBtn("StreamerMode")
+					StreamerMode:MSG("Minimap Button is now hidden.")
+				end,
+				["dbkey"] = "SHOWMINIMAPBUTTON"
+			}
+		)
+
+		STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] or 0
+		STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] + 1
+		if STMOTABPC["COUNTSETTINGS"] < 10 then
+			StreamerMode:MSG("LOADED -> /sm")
+		end
+
+		StreamerMode:InitSettings()
+		STMOUpdateNames()
+		if STMOUpdateGuildInfos then
+			STMOUpdateGuildInfos()
+		end
+	end
+end
+
 local frame = CreateFrame("FRAME", "NameChangeScripts")
 frame:RegisterEvent("PLAYER_ENTERING_WORLD")
 frame:RegisterEvent("UPDATE_MOUSEOVER_UNIT")
 frame:RegisterEvent("INSPECT_READY")
 frame:RegisterEvent("ADDON_LOADED")
-local setup = false
 local function eventHandler(self, event, ...)
 	if event == "PLAYER_ENTERING_WORLD" then
 		local isInitialLogin, isReloadingUi = ...
-		if (isInitialLogin or isReloadingUi) and not setup then
-			setup = true
-			STMOTABPC = STMOTABPC or {}
-			STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
-			SM_CHARNAME = STMOTABPC["charname"]
-			STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] or 0
-			STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] + 1
-			if STMOTABPC["COUNTSETTINGS"] < 10 then
-				StreamerMode:MSG("LOADED -> /sm")
-			end
-
-			STMOUpdateNames()
-			if STMOUpdateGuildInfos then
-				STMOUpdateGuildInfos()
-			end
+		if isInitialLogin or isReloadingUi then
+			Init()
 		end
 	elseif event == "INSPECT_READY" then
 		local element = _G["InspectFrameTitleText"]
@@ -186,28 +214,7 @@ local function eventHandler(self, event, ...)
 		end
 
 		if addonName == AddonName then
-			StreamerMode:SetVersion(132150, "1.1.3")
-			StreamerMode:SetAddonOutput("StreamerMode", 132150)
-			StreamerMode:CreateMinimapButton(
-				{
-					["name"] = "StreamerMode",
-					["icon"] = 132150,
-					["var"] = mmbtn,
-					["dbtab"] = STMOTABPC,
-					["vTT"] = {{"|T132150:16:16:0:0|t S|cff3FC7EBtreamer|rM|cff3FC7EBode|r by |cff3FC7EBD4KiR", "v|cff3FC7EB" .. StreamerMode:GetVersion()}, {StreamerMode:Trans("LID_LEFTCLICK"), StreamerMode:Trans("LID_OPENSETTINGS")}, {StreamerMode:Trans("LID_RIGHTCLICK"), StreamerMode:Trans("LID_HIDEMINIMAPBUTTON")}},
-					["funcL"] = function()
-						StreamerMode:ToggleSettings()
-					end,
-					["funcR"] = function()
-						StreamerMode:SV(STMOTABPC, "SHOWMINIMAPBUTTON", false)
-						StreamerMode:HideMMBtn("StreamerMode")
-						StreamerMode:MSG("Minimap Button is now hidden.")
-					end,
-					["dbkey"] = "SHOWMINIMAPBUTTON"
-				}
-			)
-
-			StreamerMode:InitSettings()
+			Init()
 		end
 	end
 
