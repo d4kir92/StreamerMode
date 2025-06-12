@@ -1,5 +1,5 @@
 ## Interface: 11507
-## Version: 1.1.0
+## Version: 1.1.1
 ## Title: S|cff3FC7EBtreamer|rM|cff3FC7EBode|r |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
 ## Author: D|cff3FC7EB4KiR |T132115:16:16:0:0|t

@@ -69,6 +69,7 @@ local function STMOInjectFake(element)
 				element,
 				"SetText",
 				function(self, text)
+					text = text or ""
 					STMOSetText(self, text)
 					if _detalhes then
 						_detalhes:SetNickname(SM_CHARNAME)
@@ -152,7 +153,7 @@ local function eventHandler(self, event, ...)
 		end
 
 		if addonName == AddonName then
-			StreamerMode:SetVersion(132150, "1.1.0")
+			StreamerMode:SetVersion(132150, "1.1.1")
 			StreamerMode:SetAddonOutput("StreamerMode", 132150)
 			StreamerMode:CreateMinimapButton(
 				{
@@ -198,13 +199,18 @@ local function eventHandler(self, event, ...)
 	end
 end
 
-local function Rename(msg)
+local function Rename(msg, hide)
 	STMOTABPC = STMOTABPC or {}
 	local args = {string.split(" ", msg)}
-	if args[1] ~= "" and SM_CHARNAME ~= args[1] then
+	if hide or SM_CHARNAME ~= args[1] then
 		if args[1] then
-			STMOTABPC["charname"] = args[1]
-			SM_CHARNAME = STMOTABPC["charname"]
+			if hide then
+				SM_CHARNAME = ""
+			else
+				STMOTABPC["charname"] = args[1]
+				SM_CHARNAME = STMOTABPC["charname"]
+			end
+
 			StreamerMode:MSG("|cff00ff00Renamed Character to: |r" .. args[1])
 			STMOUpdateNames()
 		else
@@ -227,6 +233,10 @@ function StreamerMode:ToggleSettings()
 end
 
 function StreamerMode:InitSettings()
+	if STMOTABPC["HIDECHARACTERNAME"] == nil then
+		STMOTABPC["HIDECHARACTERNAME"] = false
+	end
+
 	sm_settings = StreamerMode:CreateFrame(
 		{
 			["name"] = "StreamerMode",
@@ -256,13 +266,33 @@ function StreamerMode:InitSettings()
 		end
 	)
 
-	StreamerMode:AppendEditbox(
+	StreamerMode:AppendCheckbox(
+		"HIDECHARACTERNAME",
+		false,
+		function(sel, val)
+			if val then
+				sm_settings.renameeb:Hide()
+				Rename("", true)
+			else
+				sm_settings.renameeb:Show()
+				Rename(STMOTABPC["charname"])
+			end
+		end
+	)
+
+	_, sm_settings.renameeb = StreamerMode:AppendEditbox(
 		"charname",
 		"RENAMEME",
 		function(sel, val)
 			Rename(val)
 		end, x + 10
 	)
+
+	if STMOTABPC["HIDECHARACTERNAME"] then
+		sm_settings.renameeb:Hide()
+	else
+		sm_settings.renameeb:Show()
+	end
 end
 
 local function Slash()
