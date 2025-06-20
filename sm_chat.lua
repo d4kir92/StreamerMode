@@ -110,7 +110,7 @@ local function myChatFilter(self, event, msg, author, ...)
 
 	if author:find(pn) then return false, msg, SM_CHARNAME, ... end
 	for i = 1, 4 do
-		local name = UnitName("party" .. i)
+		local name, _ = UnitName("party" .. i)
 		local class = UnitClass("party" .. i)
 		if name then
 			if strlower(msg):find(strlower(name)) then
@@ -124,26 +124,12 @@ local function myChatFilter(self, event, msg, author, ...)
 	end
 end
 
-ChatFrame_AddMessageEventFilter("CHAT_MSG_CHANNEL", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_SAY", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_YELL", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_PARTY", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_WARNING", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_OFFICER", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_INSTANCE_CHAT", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_INSTANCE_CHAT_LEADER", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_EMOTE", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_TEXT_EMOTE", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_ACHIEVEMENT", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD_ACHIEVEMENT", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_GUILD_ITEM_LOOTED", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_LOOT", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_SKILL", myChatFilter)
-ChatFrame_AddMessageEventFilter("CHAT_MSG_COMBAT_XP_GAIN", myChatFilter)
+for name, val in pairs(_G) do
+	if name and type(name) == "string" and strfind(name, "CHAT_MSG_", 1, true) then
+		ChatFrame_AddMessageEventFilter(name, myChatFilter)
+	end
+end
+
 -- CHAT BUBBLES
 local events = {
 	CHAT_MSG_SAY = "chatBubbles",
