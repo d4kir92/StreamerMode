@@ -1,13 +1,14 @@
 ## Interface-Classic: 11507
 ## Interface-BCC: 20504
-## Interface-Wrath: 30403
-## Interface-Cata: 40401, 40402
+## Interface-Wrath: 30300, 30403
+## Interface-Cata: 40402
 ## Interface-Mists: 50500
-## Interface: 110007, 110100, 110105, 110107, 110200
+## Interface: 110200
 
 ## Version: 1.1.8
 ## Title: S|cff3FC7EBtreamer|rM|cff3FC7EBode|r |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
+## Notes-ruRU: Режим стримера - скрывает имя Вашего персонажа и название игрового мира
 ## Author: D|cff3FC7EB4KiR |T132115:16:16:0:0|t
 ## Category: D|cff3FC7EB4KiR |T132115:16:16:0:0|t
 ## X-Category: D|cff3FC7EB4KiR |T132115:16:16:0:0|t
@@ -22,6 +23,7 @@ libs\D4Lib\D4Lib.xml
 
 locale\enUS.lua
 locale\deDE.lua
+locale\ruRU.lua
 
 core.lua
 sm_chat.lua
