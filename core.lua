@@ -143,7 +143,7 @@ local function Init()
 		STMOTABPC = STMOTABPC or {}
 		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 		SM_CHARNAME = STMOTABPC["charname"]
-		StreamerMode:SetVersion(132150, "1.1.8")
+		StreamerMode:SetVersion(132150, "1.1.9")
 		StreamerMode:SetAddonOutput("StreamerMode", 132150)
 		StreamerMode:CreateMinimapButton(
 			{
@@ -278,7 +278,7 @@ function StreamerMode:InitSettings()
 		STMOTABPC["HIDECHARACTERNAME"] = false
 	end
 
-	sm_settings = StreamerMode:CreateFrame(
+	sm_settings = StreamerMode:CreateWindow(
 		{
 			["name"] = "StreamerMode",
 			["pTab"] = {"CENTER"},
