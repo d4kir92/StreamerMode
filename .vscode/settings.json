@@ -13,5 +13,34 @@
     },
     "Lua.workspace.library": [
         "~\\.vscode\\extensions\\ketho.wow-api-0.21.0\\Annotations\\Core"
+    ],
+    "Lua.diagnostics.globals": [
+        "FriendsFrameBattlenetFrame",
+        "PlayerName",
+        "UNITNAME_TITLE_MINION",
+        "ColorPickerFrame",
+        "UIDropDownMenu_SetWidth",
+        "UIDropDownMenu_Initialize",
+        "UIDropDownMenu_SetText",
+        "CloseDropDownMenus",
+        "UIDropDownMenu_CreateInfo",
+        "UIDropDownMenu_AddButton",
+        "ICON_LIST",
+        "ChatFrame_AddMessageEventFilter",
+        "UnitFrameHealthBar_Initialize",
+        "UnitFrameManaBar_Initialize",
+        "FocusFrame",
+        "AbbreviateLargeNumbers",
+        "AddonCompartmentFrame",
+        "MouseIsOver",
+        "ChatEdit_ParseText",
+        "ChatEdit_SendText",
+        "ChatFrame1",
+        "QuestInfoObjectivesText",
+        "QuestInfoDescriptionText",
+        "CommunitiesFrame",
+        "ShouldShowName",
+        "PVPCellNameMixin",
+        "DropDownList1Button1NormalText"
     ]
 }
