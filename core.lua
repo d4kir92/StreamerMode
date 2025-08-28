@@ -95,9 +95,9 @@ function StreamerMode:InjectText(element)
 				function(sel, text)
 					text = text or ""
 					STMOSetText(sel, text)
-					if _detalhes then
+					if getglobal("_detalhes") then
 						-- DETAILS
-						_detalhes:SetNickname(SM_CHARNAME)
+						getglobal("_detalhes"):SetNickname(SM_CHARNAME)
 					end
 				end
 			)
@@ -112,20 +112,117 @@ function StreamerMode:InjectText(element)
 	end
 end
 
-local function STMOUpdateNames()
-	for i, tf in pairs(tab_text) do
-		local spl = {string.split(".", tf)}
-		local element = nil
-		for id, v in pairs(spl) do
-			if id == 1 then
-				element = _G[v]
-			elseif element then
-				element = element[v]
+local foundPlayer = false
+local foundTarget = false
+local foundFocus = false
+local foundTargetToT = false
+local foundFocusToT = false
+function StreamerMode:UnitText(name)
+	local frame = StreamerMode:GetFrameByName(name)
+	if frame then
+		for x, ele in pairs({frame:GetRegions()}) do
+			if ele.GetText then
+				local pn = UnitName("player")
+				if pn == ele:GetText() then
+					tinsert(tab_text, ele)
+					StreamerMode:UpdateNames()
+				end
 			end
 		end
+	end
+end
 
-		if element then
-			StreamerMode:InjectText(element)
+function StreamerMode:UpdateNames()
+	if PlayerFrame and not foundPlayer then
+		foundPlayer = true
+		StreamerMode:UnitText("PlayerFrame.rightFrame.textFrame")
+	end
+
+	if TargetFrame then
+		TargetFrame:SetScript(
+			"OnShow",
+			function()
+				if not foundTarget then
+					foundTarget = true
+					StreamerMode:After(
+						0,
+						function()
+							StreamerMode:UnitText("TargetFrameTextureFrame")
+						end, "TargetFrameTextureFrame"
+					)
+				end
+			end
+		)
+	end
+
+	if FocusFrame then
+		FocusFrame:SetScript(
+			"OnShow",
+			function()
+				if not foundFocus then
+					foundFocus = true
+					StreamerMode:After(
+						0,
+						function()
+							StreamerMode:UnitText("FocusFrameTextureFrame")
+						end, "FocusFrameTextureFrame"
+					)
+				end
+			end
+		)
+	end
+
+	if TargetFrameToTTextureFrame then
+		TargetFrameToTTextureFrame:SetScript(
+			"OnShow",
+			function()
+				if not foundTargetToT then
+					foundTargetToT = true
+					StreamerMode:After(
+						0,
+						function()
+							StreamerMode:UnitText("TargetFrameToTTextureFrame")
+						end, "TargetFrameToTTextureFrame"
+					)
+				end
+			end
+		)
+	end
+
+	if FocusFrameToTTextureFrame then
+		FocusFrameToTTextureFrame:SetScript(
+			"OnShow",
+			function()
+				if not foundFocusToT then
+					foundFocusToT = true
+					StreamerMode:After(
+						0,
+						function()
+							StreamerMode:UnitText("FocusFrameToTTextureFrame")
+						end, "FocusFrameToTTextureFrame"
+					)
+				end
+			end
+		)
+	end
+
+	for i, tf in pairs(tab_text) do
+		if type(tf) == "string" then
+			local spl = {string.split(".", tf)}
+			local element = nil
+			for id, v in pairs(spl) do
+				if id == 1 then
+					element = _G[v]
+				elseif element then
+					element = element[v]
+				end
+			end
+
+			if element then
+				StreamerMode:InjectText(element)
+			end
+		else
+			StreamerMode:InjectText(tf)
 		end
 	end
 
@@ -143,7 +240,7 @@ local function Init()
 		STMOTABPC = STMOTABPC or {}
 		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 		SM_CHARNAME = STMOTABPC["charname"]
-		StreamerMode:SetVersion(132150, "1.1.9")
+		StreamerMode:SetVersion(132150, "1.1.10")
 		StreamerMode:SetAddonOutput("StreamerMode", 132150)
 		StreamerMode:CreateMinimapButton(
 			{
@@ -171,7 +268,7 @@ local function Init()
 		end
 
 		StreamerMode:InitSettings()
-		STMOUpdateNames()
+		StreamerMode:UpdateNames()
 		if STMOUpdateGuildInfos then
 			STMOUpdateGuildInfos()
 		end
@@ -211,7 +308,7 @@ local function eventHandler(self, event, ...)
 		end
 
 		if addonName == "Blizzard_MacroUI" then
-			STMOUpdateNames()
+			StreamerMode:UpdateNames()
 		end
 
 		if addonName == AddonName then
@@ -253,7 +350,7 @@ local function Rename(msg, hide)
 			end
 
 			StreamerMode:MSG("|cff00ff00Renamed Character to: |r" .. args[1])
-			STMOUpdateNames()
+			StreamerMode:UpdateNames()
 		else
 			StreamerMode:MSG("[RENAME] Missing Name")
 		end

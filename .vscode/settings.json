@@ -41,6 +41,10 @@
         "CommunitiesFrame",
         "ShouldShowName",
         "PVPCellNameMixin",
-        "DropDownList1Button1NormalText"
+        "DropDownList1Button1NormalText",
+        "PlayerFrame",
+        "TargetFrame",
+        "TargetFrameToT",
+        "FocusFrameToT"
     ]
 }
