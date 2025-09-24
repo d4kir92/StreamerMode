@@ -1,3 +1,4 @@
+local _, StreamerMode = ...
 -- Guild
 function STMOUpdateGuildInfos()
 	if CommunitiesFrame then
@@ -12,7 +13,7 @@ function STMOUpdateGuildInfos()
 						v["NameFrame"].Name,
 						"SetText",
 						function(self, text)
-							STMOSetText(self, text)
+							StreamerMode:SetText(self, text)
 						end
 					)
 				end

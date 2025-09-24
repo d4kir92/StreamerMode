@@ -1,3 +1,4 @@
+local _, StreamerMode = ...
 -- CHAT THINGS
 local sm_chat_visible = true
 -- Hide Chat
@@ -80,18 +81,19 @@ ChatFrame1HideChat:SetScript(
 )
 
 -- CHAT
-function SMReplaceCharname(msg, pn, reppn)
+function StreamerMode:ReplaceCharname(msg, pn, reppn, from)
+	if msg == nil then return msg end
 	if msg == reppn then return msg end
 	local s, e = strlower(msg):find(strlower(pn))
 	if s then
 		local b = string.sub(msg, 1, s - 1)
 		local a = string.sub(msg, e + 1)
 		if b and a then
-			return SMReplaceCharname(b .. reppn .. a, pn, reppn)
+			return StreamerMode:ReplaceCharname(b .. reppn .. a, pn, reppn, from)
 		elseif b then
-			return SMReplaceCharname(b .. reppn, pn, reppn)
+			return StreamerMode:ReplaceCharname(b .. reppn, pn, reppn, from)
 		elseif a then
-			return SMReplaceCharname(reppn .. a, pn, reppn)
+			return StreamerMode:ReplaceCharname(reppn .. a, pn, reppn, from)
 		else
 			return msg
 		end
@@ -103,7 +105,7 @@ end
 local function myChatFilter(self, event, msg, author, ...)
 	local pn = UnitName("player")
 	if strlower(msg):find(strlower(pn)) then
-		msg = SMReplaceCharname(msg, pn, SM_CHARNAME)
+		msg = StreamerMode:ReplaceCharname(msg, pn, SM_CHARNAME, "CHAT1")
 
 		return false, msg, SM_CHARNAME, ...
 	end
@@ -114,7 +116,7 @@ local function myChatFilter(self, event, msg, author, ...)
 		local class = UnitClass("party" .. i)
 		if name then
 			if strlower(msg):find(strlower(name)) then
-				msg = SMReplaceCharname(msg, name, class)
+				msg = StreamerMode:ReplaceCharname(msg, name, class, "CHAT2")
 
 				return false, msg, class, ...
 			end
@@ -156,7 +158,10 @@ if QuestInfoObjectivesText then
 			if self.smsettext then return end
 			self.smsettext = true
 			local pn = UnitName("player")
-			self:SetText(SMReplaceCharname(text, pn, SM_CHARNAME))
+			if text then
+				self:SetText(StreamerMode:ReplaceCharname(text, pn, SM_CHARNAME, "QuestInfo"))
+			end
+
 			self.smsettext = false
 		end
 	)
@@ -170,7 +175,10 @@ if QuestInfoDescriptionText then
 			if self.smsettext then return end
 			self.smsettext = true
 			local pn = UnitName("player")
-			self:SetText(SMReplaceCharname(text, pn, SM_CHARNAME))
+			if text then
+				self:SetText(StreamerMode:ReplaceCharname(text, pn, SM_CHARNAME, "Desc"))
+			end
+
 			self.smsettext = false
 		end
 	)

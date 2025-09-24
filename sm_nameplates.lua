@@ -1,5 +1,5 @@
--- Nameplates
 local _, StreamerMode = ...
+-- Nameplates
 local function SMGetConvar(name)
 	return tonumber(GetCVar(name))
 end

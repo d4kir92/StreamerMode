@@ -1,3 +1,4 @@
+local _, StreamerMode = ...
 -- Tooltips
 function SMGTThink()
 	for i, tex in pairs({GameTooltip:GetRegions()}) do
@@ -5,7 +6,7 @@ function SMGTThink()
 			local msg = tex:GetText()
 			local name = UnitName("player")
 			if msg and msg:find(name) then
-				STMOSetText(tex, msg)
+				StreamerMode:SetText(tex, msg)
 			end
 		end
 	end
@@ -58,7 +59,7 @@ f:SetScript(
 		local text = DropDownList1Button1NormalText:GetText()
 		if text and f.text ~= text then
 			f.text = text
-			STMOSetText(DropDownList1Button1NormalText, text)
+			StreamerMode:SetText(DropDownList1Button1NormalText, text)
 		end
 	end
 )

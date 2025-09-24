@@ -7,7 +7,7 @@ local tab_text = {"PlayerName", "TargetFrameTextureFrameName", "FocusFrameTextur
 -- Addons
 local tab_names = {}
 local tab_classes = {}
-function STMOSetText(self, text)
+function StreamerMode:SetText(self, text)
 	if self.sm_settext then return end
 	self.sm_settext = true
 	local pn, re = UnitName("player")
@@ -35,45 +35,47 @@ function STMOSetText(self, text)
 
 			self:SetText(msg)
 		else
-			if IsInRaid() then
-				for i = 1, 40 do
-					local name, realm = UnitName("raid" .. i)
-					if name or tab_names["raid" .. i] then
-						tab_names["raid" .. i] = name or tab_names["raid" .. i]
-						name = name or tab_names["raid" .. i]
-						local class, _ = UnitClass("raid" .. i)
-						tab_classes["raid" .. i] = class or tab_classes["raid" .. i]
-						class = tab_classes["raid" .. i]
-						local mmsg = text or self:GetText() or ""
-						if name and class and mmsg and mmsg:find(name) then
-							mmsg = string.gsub(mmsg, name, class .. " " .. i)
-							if realm then
-								mmsg = string.gsub(mmsg, realm, "")
-								mmsg = string.gsub(mmsg, "-", "")
-							end
+			if STMOTABPC["REPLACENAMESONGROUP"] then
+				if IsInRaid() then
+					for i = 1, 40 do
+						local name, realm = UnitName("raid" .. i)
+						if name or tab_names["raid" .. i] then
+							tab_names["raid" .. i] = name or tab_names["raid" .. i]
+							name = name or tab_names["raid" .. i]
+							local class, _ = UnitClass("raid" .. i)
+							tab_classes["raid" .. i] = class or tab_classes["raid" .. i]
+							class = tab_classes["raid" .. i]
+							local mmsg = text or self:GetText() or ""
+							if name and class and mmsg and mmsg:find(name) then
+								mmsg = string.gsub(mmsg, name, class .. " " .. i)
+								if realm then
+									mmsg = string.gsub(mmsg, realm, "")
+									mmsg = string.gsub(mmsg, "-", "")
+								end
 
-							self:SetText(mmsg)
+								self:SetText(mmsg)
+							end
 						end
 					end
-				end
-			else
-				for i = 1, 4 do
-					local name, realm = UnitName("party" .. i)
-					if name or tab_names["party" .. i] then
-						tab_names["party" .. i] = name or tab_names["party" .. i]
-						name = name or tab_names["party" .. i]
-						local class, _ = UnitClass("party" .. i)
-						tab_classes["party" .. i] = class or tab_classes["party" .. i]
-						class = tab_classes["party" .. i]
-						local mmsg = text or self:GetText() or ""
-						if name and class and mmsg and mmsg:find(name) then
-							mmsg = string.gsub(mmsg, name, class .. " " .. i)
-							if realm then
-								mmsg = string.gsub(mmsg, realm, "")
-								mmsg = string.gsub(mmsg, "-", "")
-							end
+				else
+					for i = 1, 4 do
+						local name, realm = UnitName("party" .. i)
+						if name or tab_names["party" .. i] then
+							tab_names["party" .. i] = name or tab_names["party" .. i]
+							name = name or tab_names["party" .. i]
+							local class, _ = UnitClass("party" .. i)
+							tab_classes["party" .. i] = class or tab_classes["party" .. i]
+							class = tab_classes["party" .. i]
+							local mmsg = text or self:GetText() or ""
+							if name and class and mmsg and mmsg:find(name) then
+								mmsg = string.gsub(mmsg, name, class .. " " .. i)
+								if realm then
+									mmsg = string.gsub(mmsg, realm, "")
+									mmsg = string.gsub(mmsg, "-", "")
+								end
 
-							self:SetText(mmsg)
+								self:SetText(mmsg)
+							end
 						end
 					end
 				end
@@ -94,7 +96,7 @@ function StreamerMode:InjectText(element)
 				"SetText",
 				function(sel, text)
 					text = text or ""
-					STMOSetText(sel, text)
+					StreamerMode:SetText(sel, text)
 					if getglobal("_detalhes") then
 						-- DETAILS
 						getglobal("_detalhes"):SetNickname(SM_CHARNAME)
@@ -240,7 +242,7 @@ local function Init()
 		STMOTABPC = STMOTABPC or {}
 		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 		SM_CHARNAME = STMOTABPC["charname"]
-		StreamerMode:SetVersion(132150, "1.1.10")
+		StreamerMode:SetVersion(132150, "1.1.11")
 		StreamerMode:SetAddonOutput("StreamerMode", 132150)
 		StreamerMode:CreateMinimapButton(
 			{
@@ -375,6 +377,10 @@ function StreamerMode:InitSettings()
 		STMOTABPC["HIDECHARACTERNAME"] = false
 	end
 
+	if STMOTABPC["REPLACENAMESONGROUP"] == nil then
+		STMOTABPC["REPLACENAMESONGROUP"] = true
+	end
+
 	sm_settings = StreamerMode:CreateWindow(
 		{
 			["name"] = "StreamerMode",
@@ -415,6 +421,14 @@ function StreamerMode:InitSettings()
 				sm_settings.renameeb:Show()
 				Rename(STMOTABPC["charname"])
 			end
+		end
+	)
+
+	StreamerMode:AppendCheckbox(
+		"REPLACENAMESONGROUP",
+		true,
+		function(sel, val)
+			C_UI.Reload()
 		end
 	)
 

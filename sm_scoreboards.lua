@@ -1,3 +1,4 @@
+local _, StreamerMode = ...
 -- Scoreboards
 --LoadAddOn("Blizzard_PVPMatch")
 function SMPVPScoreboard()
@@ -14,9 +15,9 @@ function SMPVPScoreboard()
 						"SetText",
 						function(sel, text)
 							if text then
-								STMOSetText(sel, text)
+								StreamerMode:SetText(sel, text)
 							else
-								STMOSetText(sel, sel.oldtext or "")
+								StreamerMode:SetText(sel, sel.oldtext or "")
 							end
 
 							sel.oldtext = text or ""
