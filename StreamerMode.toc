@@ -2,10 +2,10 @@
 ## Interface-BCC: 20504
 ## Interface-Wrath: 30300, 30403
 ## Interface-Cata: 40402
-## Interface-Mists: 50502
-## Interface: 110205, 110207, 120000
+## Interface-Mists: 50503
+## Interface: 110207, 120000
 
-## Version: 1.1.17
+## Version: 1.1.18
 ## Title: S|cff3FC7EBtreamer|rM|cff3FC7EBode|r |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
 ## Notes-ruRU: Режим стримера - скрывает имя Вашего персонажа и название игрового мира
