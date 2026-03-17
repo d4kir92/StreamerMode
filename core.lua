@@ -242,7 +242,7 @@ local function Init()
 		STMOTABPC = STMOTABPC or {}
 		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 		SM_CHARNAME = STMOTABPC["charname"]
-		StreamerMode:SetVersion(132150, "1.1.20")
+		StreamerMode:SetVersion(132150, "1.1.21")
 		StreamerMode:SetAddonOutput("StreamerMode", 132150)
 		StreamerMode:CreateMinimapButton(
 			{
@@ -250,7 +250,7 @@ local function Init()
 				["icon"] = 132150,
 				["var"] = mmbtn,
 				["dbtab"] = STMOTABPC,
-				["vTT"] = {{"|T132150:16:16:0:0|t S|cff3FC7EBtreamer|rM|cff3FC7EBode|r by |cff3FC7EBD4KiR", "v|cff3FC7EB" .. StreamerMode:GetVersion()}, {StreamerMode:Trans("LID_LEFTCLICK"), StreamerMode:Trans("LID_OPENSETTINGS")}, {StreamerMode:Trans("LID_RIGHTCLICK"), StreamerMode:Trans("LID_HIDEMINIMAPBUTTON")}},
+				["vTT"] = {{"|T132150:16:16:0:0|t StreamerMode by D4KiR", "v" .. StreamerMode:GetVersion()}, {StreamerMode:Trans("LID_LEFTCLICK"), StreamerMode:Trans("LID_OPENSETTINGS")}, {StreamerMode:Trans("LID_RIGHTCLICK"), StreamerMode:Trans("LID_HIDEMINIMAPBUTTON")}},
 				["funcL"] = function()
 					StreamerMode:ToggleSettings()
 				end,
@@ -387,7 +387,7 @@ function StreamerMode:InitSettings()
 			["pTab"] = {"CENTER"},
 			["sw"] = 520,
 			["sh"] = 520,
-			["title"] = format("S|cff3FC7EBtreamer|rM|cff3FC7EBode|r |T132150:16:16:0:0|t by |cff3FC7EBD4KiR |T132115:16:16:0:0|t v|cff3FC7EB%s", StreamerMode:GetVersion())
+			["title"] = format("StreamerMode |T132150:16:16:0:0|t by |cff55d2ffD4KiR |T132115:16:16:0:0|t v%s", StreamerMode:GetVersion())
 		}
 	)
 
