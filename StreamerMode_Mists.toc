@@ -1,5 +1,5 @@
 ## Interface: 50503
-## Version: 1.1.21
+## Version: 1.1.22
 ## Title: StreamerMode |T132150:16:16:0:0|t by |cff55d2ffD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode
 ## Notes-ruRU: Режим стримера - скрывает имя Вашего персонажа и название игрового мира
