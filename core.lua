@@ -242,7 +242,7 @@ local function Init()
 		STMOTABPC = STMOTABPC or {}
 		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 		SM_CHARNAME = STMOTABPC["charname"]
-		StreamerMode:SetVersion(132150, "1.1.23")
+		StreamerMode:SetVersion(132150, "1.1.24")
 		StreamerMode:SetAddonOutput("StreamerMode", 132150)
 		StreamerMode:CreateMinimapButton(
 			{
