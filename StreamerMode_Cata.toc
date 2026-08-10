@@ -1,8 +1,17 @@
 ## Interface: 40402
 ## Version: 1.1.25
 ## Title: StreamerMode |T132150:16:16:0:0|t by |cff55d2ffD4KiR |T132115:16:16:0:0|t
-## Notes: Streamer Mode
+## Notes: Streamer Mode—hides your character's name and the game world's name
+## Notes-deDE: Streamer-Modus – blendet den Namen deines Charakters und den Namen der Spielwelt aus
+## Notes-esES: Modo Streamer: oculta el nombre de tu personaje y el nombre del mundo de juego
+## Notes-esMX: Modo Streamer: oculta el nombre de tu personaje y el nombre del mundo de juego
+## Notes-frFR: Mode Streamer : masque le nom de votre personnage et le nom du monde de jeu
+## Notes-itIT: Modalità Streamer: nasconde il nome del tuo personaggio e il nome del mondo di gioco
+## Notes-koKR: 스트리머 모드—캐릭터 이름과 게임 월드 이름을 숨깁니다
+## Notes-ptBR: Modo Streamer: oculta o nome do seu personagem e o nome do mundo do jogo
 ## Notes-ruRU: Режим стримера - скрывает имя Вашего персонажа и название игрового мира
+## Notes-zhCN: 主播模式——隐藏你的角色名称和游戏世界名称
+## Notes-zhTW: 實況主模式——隱藏你的角色名稱和遊戲世界名稱
 ## Author: D4KiR |T132115:16:16:0:0|t
 ## Category: UI Overhaul
 ## Category-deDE: UI-Überholung
