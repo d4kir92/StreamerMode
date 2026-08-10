@@ -14,10 +14,7 @@ function StreamerMode:SetText(self, text)
 	local msg = text or self:GetText() or ""
 	if msg and msg:find(pn) or self == PlayerName then
 		msg = string.gsub(msg, pn, SM_CHARNAME)
-		if text then
-			msg = string.gsub(msg, text, SM_CHARNAME)
-		end
-
+		if text then msg = string.gsub(msg, text, SM_CHARNAME) end
 		if re then
 			msg = string.gsub(msg, re, "")
 			msg = string.gsub(msg, "-", "")
@@ -91,24 +88,18 @@ function StreamerMode:InjectText(element)
 	if element then
 		if element.sm_hooked == nil then
 			element.sm_hooked = true
-			hooksecurefunc(
-				element,
-				"SetText",
-				function(sel, text)
-					text = text or ""
-					StreamerMode:SetText(sel, text)
-					if getglobal("_detalhes") then
-						-- DETAILS
-						getglobal("_detalhes"):SetNickname(SM_CHARNAME)
-					end
+			hooksecurefunc(element, "SetText", function(sel, text)
+				text = text or ""
+				StreamerMode:SetText(sel, text)
+				if getglobal("_detalhes") then
+					-- DETAILS
+					getglobal("_detalhes"):SetNickname(SM_CHARNAME)
 				end
-			)
+			end)
 		end
 
 		element:SetText(StreamerMode:GetText(element))
-		if not tContains(injects, element) then
-			tinsert(injects, element)
-		end
+		if not tContains(injects, element) then tinsert(injects, element) end
 	else
 		StreamerMode:MSG("|cffff0000" .. "ELEMENT INVALID: |r" .. tostring(element))
 	end
@@ -141,71 +132,39 @@ function StreamerMode:UpdateNames()
 	end
 
 	if TargetFrame then
-		TargetFrame:SetScript(
-			"OnShow",
-			function()
-				if not foundTarget then
-					foundTarget = true
-					StreamerMode:After(
-						0,
-						function()
-							StreamerMode:UnitText("TargetFrameTextureFrame")
-						end, "TargetFrameTextureFrame"
-					)
-				end
+		TargetFrame:SetScript("OnShow", function()
+			if not foundTarget then
+				foundTarget = true
+				StreamerMode:After(0, function() StreamerMode:UnitText("TargetFrameTextureFrame") end, "TargetFrameTextureFrame")
 			end
-		)
+		end)
 	end
 
 	if FocusFrame then
-		FocusFrame:SetScript(
-			"OnShow",
-			function()
-				if not foundFocus then
-					foundFocus = true
-					StreamerMode:After(
-						0,
-						function()
-							StreamerMode:UnitText("FocusFrameTextureFrame")
-						end, "FocusFrameTextureFrame"
-					)
-				end
+		FocusFrame:SetScript("OnShow", function()
+			if not foundFocus then
+				foundFocus = true
+				StreamerMode:After(0, function() StreamerMode:UnitText("FocusFrameTextureFrame") end, "FocusFrameTextureFrame")
 			end
-		)
+		end)
 	end
 
 	if TargetFrameToTTextureFrame then
-		TargetFrameToTTextureFrame:SetScript(
-			"OnShow",
-			function()
-				if not foundTargetToT then
-					foundTargetToT = true
-					StreamerMode:After(
-						0,
-						function()
-							StreamerMode:UnitText("TargetFrameToTTextureFrame")
-						end, "TargetFrameToTTextureFrame"
-					)
-				end
+		TargetFrameToTTextureFrame:SetScript("OnShow", function()
+			if not foundTargetToT then
+				foundTargetToT = true
+				StreamerMode:After(0, function() StreamerMode:UnitText("TargetFrameToTTextureFrame") end, "TargetFrameToTTextureFrame")
 			end
-		)
+		end)
 	end
 
 	if FocusFrameToTTextureFrame then
-		FocusFrameToTTextureFrame:SetScript(
-			"OnShow",
-			function()
-				if not foundFocusToT then
-					foundFocusToT = true
-					StreamerMode:After(
-						0,
-						function()
-							StreamerMode:UnitText("FocusFrameToTTextureFrame")
-						end, "FocusFrameToTTextureFrame"
-					)
-				end
+		FocusFrameToTTextureFrame:SetScript("OnShow", function()
+			if not foundFocusToT then
+				foundFocusToT = true
+				StreamerMode:After(0, function() StreamerMode:UnitText("FocusFrameToTTextureFrame") end, "FocusFrameToTTextureFrame")
 			end
-		)
+		end)
 	end
 
 	for i, tf in pairs(tab_text) do
@@ -220,18 +179,14 @@ function StreamerMode:UpdateNames()
 				end
 			end
 
-			if element then
-				StreamerMode:InjectText(element)
-			end
+			if element then StreamerMode:InjectText(element) end
 		else
 			StreamerMode:InjectText(tf)
 		end
 	end
 
 	for i, element in pairs(injects) do
-		if element then
-			StreamerMode:InjectText(element)
-		end
+		if element then StreamerMode:InjectText(element) end
 	end
 end
 
@@ -242,38 +197,29 @@ local function Init()
 		STMOTABPC = STMOTABPC or {}
 		STMOTABPC["charname"] = STMOTABPC["charname"] or "RENAMEME"
 		SM_CHARNAME = STMOTABPC["charname"]
-		StreamerMode:SetVersion(132150, "1.1.24")
+		StreamerMode:SetVersion(132150, "1.1.25")
 		StreamerMode:SetAddonOutput("StreamerMode", 132150)
-		StreamerMode:CreateMinimapButton(
-			{
-				["name"] = "StreamerMode",
-				["icon"] = 132150,
-				["var"] = mmbtn,
-				["dbtab"] = STMOTABPC,
-				["vTT"] = {{"|T132150:16:16:0:0|t StreamerMode by D4KiR", "v" .. StreamerMode:GetVersion()}, {StreamerMode:Trans("LID_LEFTCLICK"), StreamerMode:Trans("LID_OPENSETTINGS")}, {StreamerMode:Trans("LID_RIGHTCLICK"), StreamerMode:Trans("LID_HIDEMINIMAPBUTTON")}},
-				["funcL"] = function()
-					StreamerMode:ToggleSettings()
-				end,
-				["funcR"] = function()
-					StreamerMode:SV(STMOTABPC, "SHOWMINIMAPBUTTON", false)
-					StreamerMode:HideMMBtn("StreamerMode")
-					StreamerMode:MSG("Minimap Button is now hidden.")
-				end,
-				["dbkey"] = "SHOWMINIMAPBUTTON"
-			}
-		)
+		StreamerMode:CreateMinimapButton({
+			["name"] = "StreamerMode",
+			["icon"] = 132150,
+			["var"] = mmbtn,
+			["dbtab"] = STMOTABPC,
+			["vTT"] = {{"|T132150:16:16:0:0|t StreamerMode by D4KiR", "v" .. StreamerMode:GetVersion()}, {StreamerMode:Trans("LID_LEFTCLICK"), StreamerMode:Trans("LID_OPENSETTINGS")}, {StreamerMode:Trans("LID_RIGHTCLICK"), StreamerMode:Trans("LID_HIDEMINIMAPBUTTON")}},
+			["funcL"] = function() StreamerMode:ToggleSettings() end,
+			["funcR"] = function()
+				StreamerMode:SV(STMOTABPC, "SHOWMINIMAPBUTTON", false)
+				StreamerMode:HideMMBtn("StreamerMode")
+				StreamerMode:MSG("Minimap Button is now hidden.")
+			end,
+			["dbkey"] = "SHOWMINIMAPBUTTON"
+		})
 
 		STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] or 0
 		STMOTABPC["COUNTSETTINGS"] = STMOTABPC["COUNTSETTINGS"] + 1
-		if STMOTABPC["COUNTSETTINGS"] < 10 then
-			StreamerMode:MSG("LOADED -> /sm")
-		end
-
+		if STMOTABPC["COUNTSETTINGS"] < 10 then StreamerMode:MSG("LOADED -> /sm") end
 		StreamerMode:InitSettings()
 		StreamerMode:UpdateNames()
-		if STMOUpdateGuildInfos then
-			STMOUpdateGuildInfos()
-		end
+		if STMOUpdateGuildInfos then STMOUpdateGuildInfos() end
 	end
 end
 
@@ -285,14 +231,10 @@ frame:RegisterEvent("ADDON_LOADED")
 local function eventHandler(self, event, ...)
 	if event == "PLAYER_ENTERING_WORLD" then
 		local isInitialLogin, isReloadingUi = ...
-		if isInitialLogin or isReloadingUi then
-			Init()
-		end
+		if isInitialLogin or isReloadingUi then Init() end
 	elseif event == "INSPECT_READY" then
 		local element = _G["InspectFrameTitleText"]
-		if element then
-			StreamerMode:InjectText(element)
-		end
+		if element then StreamerMode:InjectText(element) end
 	elseif event == "ADDON_LOADED" then
 		local addonName = ...
 		if not addonName then return end
@@ -302,29 +244,20 @@ local function eventHandler(self, event, ...)
 				element = element["GuildMemberDetailFrame"]
 				if element then
 					element = element["Name"]
-					if element then
-						StreamerMode:InjectText(element)
-					end
+					if element then StreamerMode:InjectText(element) end
 				end
 			end
 		end
 
-		if addonName == "Blizzard_MacroUI" then
-			StreamerMode:UpdateNames()
-		end
-
-		if addonName == AddonName then
-			Init()
-		end
+		if addonName == "Blizzard_MacroUI" then StreamerMode:UpdateNames() end
+		if addonName == AddonName then Init() end
 	end
 
 	for i = 1, 4 do
 		local element = _G["PartyMemberFrame" .. i .. "Name"]
 		if element then
 			local name = UnitName("party" .. i)
-			if name then
-				StreamerMode:InjectText(element)
-			end
+			if name then StreamerMode:InjectText(element) end
 		end
 	end
 
@@ -332,9 +265,7 @@ local function eventHandler(self, event, ...)
 		local element = _G["CombatRaidFrame" .. i .. "Name"]
 		if element then
 			local name = UnitName("raid" .. i)
-			if name then
-				StreamerMode:InjectText(element)
-			end
+			if name then StreamerMode:InjectText(element) end
 		end
 	end
 end
@@ -357,7 +288,6 @@ local function Rename(msg, hide)
 			StreamerMode:MSG("[RENAME] Missing Name")
 		end
 	end
-
 	return true
 end
 
@@ -373,23 +303,15 @@ function StreamerMode:ToggleSettings()
 end
 
 function StreamerMode:InitSettings()
-	if STMOTABPC["HIDECHARACTERNAME"] == nil then
-		STMOTABPC["HIDECHARACTERNAME"] = false
-	end
-
-	if STMOTABPC["REPLACENAMESONGROUP"] == nil then
-		STMOTABPC["REPLACENAMESONGROUP"] = true
-	end
-
-	sm_settings = StreamerMode:CreateWindow(
-		{
-			["name"] = "StreamerMode",
-			["pTab"] = {"CENTER"},
-			["sw"] = 520,
-			["sh"] = 520,
-			["title"] = format("StreamerMode |T132150:16:16:0:0|t by |cff55d2ffD4KiR |T132115:16:16:0:0|t v%s", StreamerMode:GetVersion())
-		}
-	)
+	if STMOTABPC["HIDECHARACTERNAME"] == nil then STMOTABPC["HIDECHARACTERNAME"] = false end
+	if STMOTABPC["REPLACENAMESONGROUP"] == nil then STMOTABPC["REPLACENAMESONGROUP"] = true end
+	sm_settings = StreamerMode:CreateWindow({
+		["name"] = "StreamerMode",
+		["pTab"] = {"CENTER"},
+		["sw"] = 520,
+		["sh"] = 520,
+		["title"] = format("StreamerMode |T132150:16:16:0:0|t by |cff55d2ffD4KiR |T132115:16:16:0:0|t v%s", StreamerMode:GetVersion())
+	})
 
 	local x = 15
 	local y = 10
@@ -398,48 +320,26 @@ function StreamerMode:InitSettings()
 	StreamerMode:SetAppendParent(sm_settings)
 	StreamerMode:SetAppendTab(STMOTABPC)
 	StreamerMode:AppendCategory("GENERAL")
-	StreamerMode:AppendCheckbox(
-		"SHOWMINIMAPBUTTON",
-		StreamerMode:GetWoWBuild() ~= "RETAIL",
-		function()
-			if StreamerMode:GV(STMOTABPC, "SHOWMINIMAPBUTTON", StreamerMode:GetWoWBuild() ~= "RETAIL") then
-				StreamerMode:ShowMMBtn("StreamerMode")
-			else
-				StreamerMode:HideMMBtn("StreamerMode")
-			end
+	StreamerMode:AppendCheckbox("SHOWMINIMAPBUTTON", StreamerMode:GetWoWBuild() ~= "RETAIL", function()
+		if StreamerMode:GV(STMOTABPC, "SHOWMINIMAPBUTTON", StreamerMode:GetWoWBuild() ~= "RETAIL") then
+			StreamerMode:ShowMMBtn("StreamerMode")
+		else
+			StreamerMode:HideMMBtn("StreamerMode")
 		end
-	)
+	end)
 
-	StreamerMode:AppendCheckbox(
-		"HIDECHARACTERNAME",
-		false,
-		function(sel, val)
-			if val then
-				sm_settings.renameeb:Hide()
-				Rename("", true)
-			else
-				sm_settings.renameeb:Show()
-				Rename(STMOTABPC["charname"])
-			end
+	StreamerMode:AppendCheckbox("HIDECHARACTERNAME", false, function(sel, val)
+		if val then
+			sm_settings.renameeb:Hide()
+			Rename("", true)
+		else
+			sm_settings.renameeb:Show()
+			Rename(STMOTABPC["charname"])
 		end
-	)
+	end)
 
-	StreamerMode:AppendCheckbox(
-		"REPLACENAMESONGROUP",
-		true,
-		function(sel, val)
-			C_UI.Reload()
-		end
-	)
-
-	_, sm_settings.renameeb = StreamerMode:AppendEditbox(
-		"charname",
-		"RENAMEME",
-		function(sel, val)
-			Rename(val)
-		end, x + 10
-	)
-
+	StreamerMode:AppendCheckbox("REPLACENAMESONGROUP", true, function(sel, val) C_UI.Reload() end)
+	_, sm_settings.renameeb = StreamerMode:AppendEditbox("charname", "RENAMEME", function(sel, val) Rename(val) end, x + 10)
 	if STMOTABPC["HIDECHARACTERNAME"] then
 		sm_settings.renameeb:Hide()
 	else
@@ -450,23 +350,15 @@ end
 local function Slash()
 	STMOTABPC = STMOTABPC or {}
 	StreamerMode:ToggleSettings()
-
 	return false
 end
 
 frame:SetScript("OnEvent", eventHandler)
 StreamerMode:AddSlash("sm", Slash)
 StreamerMode:AddSlash("streamermode", Slash)
-hooksecurefunc(
-	FriendsFrameBattlenetFrame.Tag,
-	"SetText",
-	function(self, text)
-		if self.sm_settext then return end
-		self.sm_settext = true
-		if text then
-			self:SetText("########")
-		end
-
-		self.sm_settext = false
-	end
-)
+hooksecurefunc(FriendsFrameBattlenetFrame.Tag, "SetText", function(self, text)
+	if self.sm_settext then return end
+	self.sm_settext = true
+	if text then self:SetText("########") end
+	self.sm_settext = false
+end)
