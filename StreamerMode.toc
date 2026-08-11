@@ -5,7 +5,7 @@
 ## Interface-Mists: 50504
 ## Interface: 120100, 120007
 
-## Version: 1.1.26
+## Version: 1.1.27
 ## Title: StreamerMode by |cff55d2ffD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode—hides your character's name and the game world's name
 ## Notes-deDE: Streamer-Modus – blendet den Namen deines Charakters und den Namen der Spielwelt aus
@@ -39,9 +39,17 @@
 
 libs\D4Lib\D4Lib.xml
 
-locale\enUS.lua
 locale\deDE.lua
+locale\enUS.lua
+locale\esES.lua
+locale\esMX.lua
+locale\frFR.lua
+locale\itIT.lua
+locale\koKR.lua
+locale\ptBR.lua
 locale\ruRU.lua
+locale\zhCN.lua
+locale\zhTW.lua
 
 core.lua
 sm_chat.lua
