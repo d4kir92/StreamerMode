@@ -1,11 +1,13 @@
 ## Interface-Classic: 11509
+## Interface-Forever: 16001
 ## Interface-BCC: 20506
 ## Interface-Wrath: 30403
+## Interface-Titan: 38002
 ## Interface-Cata: 40402
 ## Interface-Mists: 50504
 ## Interface: 120100
 
-## Version: 1.1.27
+## Version: 1.1.28
 ## Title: StreamerMode by |cff55d2ffD4KiR |T132115:16:16:0:0|t
 ## Notes: Streamer Mode—hides your character's name and the game world's name
 ## Notes-deDE: Streamer-Modus – blendet den Namen deines Charakters und den Namen der Spielwelt aus
