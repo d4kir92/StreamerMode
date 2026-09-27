@@ -338,7 +338,7 @@ function StreamerMode:InitSettings()
 		end
 	end)
 
-	StreamerMode:AppendCheckbox("REPLACENAMESONGROUP", true, function(sel, val) C_UI.Reload() end)
+	StreamerMode:AppendCheckbox("REPLACENAMESONGROUP", true)
 	_, sm_settings.renameeb = StreamerMode:AppendEditbox("charname", "RENAMEME", function(sel, val) Rename(val) end, x + 10)
 	if STMOTABPC["HIDECHARACTERNAME"] then
 		sm_settings.renameeb:Hide()
